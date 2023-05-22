@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   mongo:
-    image: carlosoliveradocker/mongo_db_w_sample_db
+    image: mongo:6
     ports:
       - 27017:27017
     volumes:
@@ -11,6 +11,24 @@ services:
       - type: volume
         source: mongo_volume
         target: /data/db
+      - type: bind
+        source: ./mongo-init.sh
+        target: /docker-entrypoint-initdb.d/mongo-init.sh
+      - type: bind
+        source: ./data/listingsAndReview.json
+        target: /data/listingsAndReview.json
+      - type: bind
+        source: ./data/sales.json
+        target: /data/sales.json
+      - type: bind
+        source: ./data/accounts.json
+        target: /data/accounts.json
+      - type: bind
+        source: ./data/customers.json
+        target: /data/customers.json
+      - type: bind
+        source: ./data/transactions.json
+        target: /data/transactions.json
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: test
